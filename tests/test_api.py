@@ -1,20 +1,30 @@
+import json
+
 from nose.tools import *
 import responses
 
-from pywik import Server
+from pywik.api import ApiConnection
 from tests import PywikTestCase
 
 
-class ServerTestCase(PywikTestCase):
+class ApiTestCase(PywikTestCase):
 
     def setUp(self):
-        self.server = Server(url='http://example.test', token_auth='abc')
+        self.api = ApiConnection(
+            url='http://example.test',
+            token_auth='abc',
+        )
 
     @responses.activate
     def test_version(self):
         self.add_fake_response('API', 'getPiwikVersion', {"value":"2.7.0"})
 
+        response = self.api.get(
+            module='API',
+            method='getPiwikVersion',
+        )
+
         assert_equal(
-            self.server.version,
-            '2.7.0',
+            response,
+            {'value': '2.7.0'}
         )
