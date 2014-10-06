@@ -12,7 +12,7 @@ class ApiConnection(object):
         response = requests.get(self.url, params={
             'token_auth': self.token_auth,
             'module': module,
-            'method': '{}.{}'.format(module, method),
+            'method': '{0}.{1}'.format(module, method),
             'format': 'json'
         })
 
